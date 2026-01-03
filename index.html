@@ -2,163 +2,181 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<title>Bir Soru 💐</title>
+<title>💐</title>
 
 <style>
 html, body {
     margin: 0;
     padding: 0;
     height: 100%;
-    font-family: 'Segoe UI', sans-serif;
     overflow: hidden;
-    transition: background 2s;
-}
-
-/* Gece-Gündüz */
-body.day {
-    background: linear-gradient(#87ceeb, #fff);
-}
-body.night {
-    background: radial-gradient(circle, #1b2735, #090a0f);
-}
-
-/* Merkez */
-.center {
-    position: absolute;
-    top: 45%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-    color: white;
+    font-family: 'Segoe UI', sans-serif;
+    background: radial-gradient(circle at bottom, #1b2735, #090a0f);
+    color: #fff;
 }
 
 /* Yazı */
-h1 {
-    font-size: 2em;
-    margin-bottom: 20px;
-    text-shadow: 0 0 10px pink;
-}
-
-/* Güller */
-.bouquet {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-bottom: 20px;
-}
-
-.rose {
-    width: 40px;
-    height: 40px;
-    background: red;
-    border-radius: 50%;
-    position: relative;
-    animation: float 3s infinite ease-in-out;
-}
-
-.rose::after {
-    content: '';
+.question {
     position: absolute;
-    width: 20px;
-    height: 20px;
-    background: pink;
+    top: 12%;
+    width: 100%;
+    text-align: center;
+    font-size: 32px;
+    text-shadow: 0 0 15px pink;
+}
+
+/* Çiçek alanı */
+.field {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 55%;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: flex-end;
+}
+
+/* Ortak çiçek */
+.flower {
+    position: relative;
+    animation: sway 3s ease-in-out infinite;
+}
+
+/* Sap */
+.stem {
+    width: 6px;
+    height: 0;
+    background: #2ecc71;
+    margin: 0 auto;
+    animation: grow 2.5s forwards;
+}
+
+/* Kasımpatı */
+.chrysanthemum {
+    width: 36px;
+    height: 36px;
+    background: radial-gradient(circle, #fff, #ffd700);
     border-radius: 50%;
-    top: 10px;
-    left: 10px;
+    box-shadow: 0 0 15px gold;
+    margin: -10px auto 0;
 }
 
-@keyframes float {
-    0% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
-    100% { transform: translateY(0); }
+/* Gül */
+.rose {
+    width: 34px;
+    height: 34px;
+    background: radial-gradient(circle at 30% 30%, #ff9aa2, #c9184a);
+    border-radius: 50%;
+    box-shadow: 0 0 15px #ff4d6d;
+    margin: -10px auto 0;
 }
 
-/* EVET butonu */
+/* Diğer çiçek */
+.other {
+    width: 30px;
+    height: 30px;
+    background: radial-gradient(circle, #ffdde1, #ee9ca7);
+    border-radius: 50%;
+    box-shadow: 0 0 12px pink;
+    margin: -10px auto 0;
+}
+
+@keyframes grow {
+    to { height: 130px; }
+}
+
+@keyframes sway {
+    0% { transform: rotate(-2deg); }
+    50% { transform: rotate(2deg); }
+    100% { transform: rotate(-2deg); }
+}
+
+/* Butonlar */
+.buttons {
+    position: absolute;
+    top: 45%;
+    width: 100%;
+    text-align: center;
+}
+
 button {
     padding: 12px 30px;
     font-size: 18px;
     border: none;
-    border-radius: 30px;
+    border-radius: 25px;
     cursor: pointer;
-    background: hotpink;
-    color: white;
-    box-shadow: 0 0 15px pink;
-    transition: transform 0.3s;
+    margin: 0 15px;
 }
 
-button:hover {
-    transform: scale(1.1);
+#yes {
+    background: hotpink;
+    color: #fff;
+    box-shadow: 0 0 15px pink;
+}
+
+#no {
+    background: #444;
+    color: #fff;
+    position: absolute;
 }
 
 /* Kalpler */
 .heart {
     position: absolute;
-    color: pink;
-    font-size: 20px;
-    animation: rise 2s linear forwards;
+    font-size: 22px;
+    animation: floatUp 2s linear forwards;
 }
 
-@keyframes rise {
-    from { transform: translateY(0); opacity: 1; }
-    to { transform: translateY(-200px); opacity: 0; }
-}
-
-/* Gece-gündüz tuşu */
-.toggle {
-    position: fixed;
-    top: 15px;
-    right: 15px;
-    background: #fff;
-    color: #000;
-    border-radius: 20px;
-    padding: 8px 15px;
-    cursor: pointer;
-    font-size: 14px;
+@keyframes floatUp {
+    from { opacity: 1; transform: translateY(0); }
+    to { opacity: 0; transform: translateY(-200px); }
 }
 </style>
 </head>
 
-<body class="night">
+<body>
 
-<div class="toggle" onclick="toggleDay()">🌙 / ☀️</div>
+<div class="question">
+    Şey hanımefendi, sıkıntı yoksa benimle çıkar mısın?
+</div>
 
-<div class="center">
-    <div class="bouquet">
-        <div class="rose"></div>
-        <div class="rose"></div>
-        <div class="rose"></div>
-        <div class="rose"></div>
-        <div class="rose"></div>
-    </div>
+<div class="buttons">
+    <button id="yes" onclick="yes()">Evet 💖</button>
+    <button id="no">Hayır ❌</button>
+</div>
 
-    <h1>Şey hanımefendi,<br>sıkıntı yoksa benimle çıkar mısın?</h1>
-
-    <button onclick="yes()">Evet 💖</button>
+<div class="field">
+    <div class="flower"><div class="stem"></div><div class="chrysanthemum"></div></div>
+    <div class="flower"><div class="stem"></div><div class="rose"></div></div>
+    <div class="flower"><div class="stem"></div><div class="other"></div></div>
+    <div class="flower"><div class="stem"></div><div class="rose"></div></div>
+    <div class="flower"><div class="stem"></div><div class="chrysanthemum"></div></div>
 </div>
 
 <audio id="music" loop>
-    <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_4b8d60b0a2.mp3" type="audio/mpeg">
+  <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_4b8d60b0a2.mp3" type="audio/mpeg">
 </audio>
 
 <script>
-let day = false;
+const noBtn = document.getElementById("no");
+
+noBtn.addEventListener("mouseover", () => {
+    noBtn.style.left = Math.random() * 80 + "%";
+    noBtn.style.top = Math.random() * 60 + "%";
+});
 
 function yes() {
     document.getElementById("music").play();
-    for (let i = 0; i < 20; i++) {
-        let heart = document.createElement("div");
-        heart.className = "heart";
-        heart.innerHTML = "💖";
-        heart.style.left = Math.random() * window.innerWidth + "px";
-        heart.style.top = window.innerHeight + "px";
-        document.body.appendChild(heart);
-        setTimeout(() => heart.remove(), 2000);
-    }
-}
 
-function toggleDay() {
-    day = !day;
-    document.body.className = day ? "day" : "night";
+    for (let i = 0; i < 25; i++) {
+        let h = document.createElement("div");
+        h.className = "heart";
+        h.innerHTML = "💖";
+        h.style.left = Math.random() * window.innerWidth + "px";
+        h.style.top = window.innerHeight + "px";
+        document.body.appendChild(h);
+        setTimeout(() => h.remove(), 2000);
+    }
 }
 </script>
 
