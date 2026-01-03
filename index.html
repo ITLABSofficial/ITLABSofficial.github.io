@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>❤️</title>
+    <style>
+        body {
+            margin: 0;
+            background: #0d0d0d;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            color: #ff4d6d;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        #text {
+            position: absolute;
+            bottom: 15%;
+            font-size: 28px;
+            font-weight: bold;
+            text-align: center;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%   { transform: scale(1); }
+            50%  { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+
+<canvas id="heart"></canvas>
+<div id="text">Esra’nın numarası ne?</div>
+
+<script>
+    const canvas = document.getElementById("heart");
+    const ctx = canvas.getContext("2d");
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    let t = 0;
+
+    function drawHeart(scale) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.beginPath();
+
+        for (let i = 0; i < Math.PI * 2; i += 0.01) {
+            const x = 16 * Math.pow(Math.sin(i), 3);
+            const y = -(13 * Math.cos(i) - 5 * Math.cos(2 * i) - 2 * Math.cos(3 * i) - Math.cos(4 * i));
+
+            ctx.lineTo(
+                canvas.width / 2 + x * scale,
+                canvas.height / 2 + y * scale
+            );
+        }
+
+        ctx.strokeStyle = "#ff4d6d";
+        ctx.lineWidth = 3;
+        ctx.shadowColor = "#ff4d6d";
+        ctx.shadowBlur = 15;
+        ctx.stroke();
+    }
+
+    function animate() {
+        t += 0.05;
+        const scale = 12 + Math.sin(t) * 1.5;
+        drawHeart(scale);
+        requestAnimationFrame(animate);
+    }
+
+    animate();
+</script>
+
+</body>
+</html>
