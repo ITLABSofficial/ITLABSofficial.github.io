@@ -1,80 +1,151 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <title>❤️</title>
-    <style>
-        body {
-            margin: 0;
-            background: #0d0d0d;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            overflow: hidden;
-            color: #ff4d6d;
-            font-family: Arial, Helvetica, sans-serif;
-        }
+<meta charset="UTF-8">
+<title>🌹</title>
+<style>
+    * { box-sizing: border-box; }
+    body {
+        margin: 0;
+        height: 100vh;
+        background: linear-gradient(#0b1020 65%, #3a2a1a 65%);
+        overflow: hidden;
+        font-family: "Segoe UI", Arial, sans-serif;
+        color: #ffd1dc;
+    }
 
-        #text {
-            position: absolute;
-            bottom: 15%;
-            font-size: 28px;
-            font-weight: bold;
-            text-align: center;
-            animation: pulse 1.5s infinite;
-        }
+    /* Yazı */
+    .question {
+        position: absolute;
+        top: 12%;
+        width: 100%;
+        text-align: center;
+        font-size: 32px;
+        font-weight: 700;
+        text-shadow: 0 0 15px rgba(255,77,109,.7);
+        animation: fadeIn 2s ease-out forwards;
+    }
 
-        @keyframes pulse {
-            0%   { transform: scale(1); }
-            50%  { transform: scale(1.1); }
-            100% { transform: scale(1); }
-        }
-    </style>
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-20px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Toprak */
+    .ground {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 35%;
+        background: #3a2a1a;
+    }
+
+    /* Çiçek alanı */
+    .field {
+        position: absolute;
+        bottom: 35%;
+        width: 100%;
+        height: 65%;
+        pointer-events: none;
+    }
+
+    /* Çiçek */
+    .flower {
+        position: absolute;
+        bottom: -120px;
+        animation: grow 3s ease-out forwards;
+    }
+
+    .stem {
+        width: 6px;
+        height: 0;
+        background: #2ecc71;
+        margin: 0 auto;
+        animation: stemGrow 3s ease-out forwards;
+    }
+
+    .leaf {
+        position: absolute;
+        width: 18px;
+        height: 10px;
+        background: #27ae60;
+        border-radius: 50%;
+        top: 30px;
+        transform: rotate(-25deg);
+    }
+
+    .leaf.right {
+        right: -16px;
+        transform: rotate(25deg);
+    }
+
+    .bloom {
+        width: 34px;
+        height: 34px;
+        background: radial-gradient(circle at 30% 30%, #ffb3c7, #ff4d6d);
+        border-radius: 50%;
+        margin: -10px auto 0;
+        box-shadow: 0 0 20px rgba(255,77,109,.9);
+        transform: scale(0);
+        animation: bloom 1.5s ease-out 2s forwards;
+    }
+
+    @keyframes grow {
+        to { bottom: 0; }
+    }
+    @keyframes stemGrow {
+        to { height: 120px; }
+    }
+    @keyframes bloom {
+        to { transform: scale(1); }
+    }
+</style>
 </head>
 <body>
 
-<canvas id="heart"></canvas>
-<div id="text">Esra’nın numarası ne?</div>
+<div class="question">
+    Şey hanım efendi, sıkıntı yoksa benimle çıkar mısın?
+</div>
+
+<div class="field" id="field"></div>
+<div class="ground"></div>
 
 <script>
-    const canvas = document.getElementById("heart");
-    const ctx = canvas.getContext("2d");
+    const field = document.getElementById("field");
 
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    function createFlower(x, delay) {
+        const f = document.createElement("div");
+        f.className = "flower";
+        f.style.left = x + "%";
+        f.style.animationDelay = delay + "s";
 
-    let t = 0;
+        const stem = document.createElement("div");
+        stem.className = "stem";
+        stem.style.animationDelay = delay + "s";
 
-    function drawHeart(scale) {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.beginPath();
+        const leafL = document.createElement("div");
+        leafL.className = "leaf";
 
-        for (let i = 0; i < Math.PI * 2; i += 0.01) {
-            const x = 16 * Math.pow(Math.sin(i), 3);
-            const y = -(13 * Math.cos(i) - 5 * Math.cos(2 * i) - 2 * Math.cos(3 * i) - Math.cos(4 * i));
+        const leafR = document.createElement("div");
+        leafR.className = "leaf right";
 
-            ctx.lineTo(
-                canvas.width / 2 + x * scale,
-                canvas.height / 2 + y * scale
-            );
-        }
+        const bloom = document.createElement("div");
+        bloom.className = "bloom";
 
-        ctx.strokeStyle = "#ff4d6d";
-        ctx.lineWidth = 3;
-        ctx.shadowColor = "#ff4d6d";
-        ctx.shadowBlur = 15;
-        ctx.stroke();
+        stem.appendChild(leafL);
+        stem.appendChild(leafR);
+        f.appendChild(stem);
+        f.appendChild(bloom);
+
+        field.appendChild(f);
     }
 
-    function animate() {
-        t += 0.05;
-        const scale = 12 + Math.sin(t) * 1.5;
-        drawHeart(scale);
-        requestAnimationFrame(animate);
+    // Rastgele ama güzel dizilim
+    let delay = 0.5;
+    for (let i = 0; i < 9; i++) {
+        createFlower(10 + i * 10, delay);
+        delay += 0.4;
     }
-
-    animate();
 </script>
 
 </body>
