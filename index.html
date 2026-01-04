@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+
+<!-- iPhone FULL SCREEN AYARLARI -->
+<meta name="viewport"
+content="width=device-width,
+initial-scale=1,
+maximum-scale=1,
+user-scalable=no,
+viewport-fit=cover">
+
+<title>Elanur Hanım 🌸</title>
+
+<style>
+:root {
+    --safe-top: env(safe-area-inset-top);
+    --safe-bottom: env(safe-area-inset-bottom);
+}
+
+* {
+    -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    height: 100dvh;
+    overflow: hidden;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: linear-gradient(to bottom, #c8facc, #fef6d8);
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: var(--safe-top);
+    padding-bottom: var(--safe-bottom);
+}
+
+.container {
+    width: 92%;
+    max-width: 420px;
+    background: rgba(255,255,255,0.95);
+    padding: 24px;
+    border-radius: 22px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+    text-align: center;
+    z-index: 2;
+}
+
+h1 {
+    color: #2e7d32;
+    font-size: 26px;
+    margin-bottom: 10px;
+}
+
+p {
+    font-size: 17px;
+    margin-bottom: 18px;
+}
+
+button {
+    width: 100%;
+    padding: 16px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 16px;
+    font-size: 17px;
+    font-weight: 500;
+    background: #81c784;
+    color: white;
+    cursor: pointer;
+    transition: transform 0.15s ease, background 0.3s;
+}
+
+button:active {
+    transform: scale(0.96);
+    background: #66bb6a;
+}
+
+/* KELEBEK */
+.butterfly {
+    position: absolute;
+    width: 70px;
+    height: 70px;
+    background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Butterfly_icon.svg/512px-Butterfly_icon.svg.png')
+    no-repeat center/contain;
+    animation: fly 9s linear infinite;
+    opacity: 0.85;
+    pointer-events: none;
+}
+
+@keyframes fly {
+    0%   { left: -20%; top: 25%; transform: rotate(0deg); }
+    50%  { left: 50%; top: 10%; transform: rotate(25deg); }
+    100% { left: 120%; top: 30%; transform: rotate(-20deg); }
+}
+
+.loading {
+    display: none;
+    font-size: 16px;
+    color: #2e7d32;
+    margin-top: 14px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="butterfly"></div>
+
+<div class="container">
+    <h1>🌸 Elanur Hanım 🌸</h1>
+    <p>Bugünkü keyfiniz, haliniz hatrınız nasıl?</p>
+
+    <button onclick="send('İyi')">😊 İyi</button>
+    <button onclick="send('Çok iyi')">😄 Çok iyi</button>
+    <button onclick="send('Orta')">😐 Orta</button>
+    <button onclick="send('İdare eder')">🙂 İdare eder</button>
+    <button onclick="send('Kötü')">😔 Kötü</button>
+    <button onclick="send('Bilmiyorum')">🤔 Bilmiyorum</button>
+
+    <div class="loading" id="loading">
+        🦋 Kelebekler uçuyor...
+    </div>
+</div>
+
+<script>
+function send(answer) {
+    document.getElementById("loading").style.display = "block";
+
+    const phone = "905300102856";
+    const text = `Elanur Hanım bugün kendimi "${answer}" hissediyorum 🌸`;
+
+    setTimeout(() => {
+        window.location.href =
+        `https://wa.me/${phone}?text=${encodeURIComponent(text)}`;
+    }, 1500);
+}
+</script>
+
+</body>
+</html>
