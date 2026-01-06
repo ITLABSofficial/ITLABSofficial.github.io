@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="MyOS x64 Teknik Mimari Raporu: Clang/LLVM Tabanlı Yüksek Performanslı Oyun Dağıtımı">
+    <title>MyOS x64 | Clang/LLVM Mimari Raporu</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #00e5ff; /* Neon Mavi */
+            --secondary: #7000ff; /* Neon Mor */
+            --bg-dark: #0a0a0a;
+            --bg-card: #161616;
+            --text-main: #e0e0e0;
+            --text-muted: #a0a0a0;
+            --code-bg: #1e1e1e;
+            --accent-green: #00ff9d;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        /* Layout */
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            width: 280px;
+            background-color: var(--bg-card);
+            padding: 2rem;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            border-right: 1px solid #333;
+            display: none; /* Mobile default */
+        }
+
+        .sidebar h1 {
+            font-size: 1.5rem;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 2rem;
+            font-weight: 800;
+        }
+
+        .nav-links {
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-bottom: 1rem;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--primary);
+            padding-left: 5px;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 2rem;
+            margin-left: 0;
+            width: 100%;
+        }
+
+        @media (min-width: 992px) {
+            .sidebar { display: block; }
+            .main-content { margin-left: 280px; padding: 4rem; }
+        }
+
+        /* Hero Section */
+        header {
+            margin-bottom: 4rem;
+            border-bottom: 1px solid #333;
+            padding-bottom: 2rem;
+        }
+
+        header h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #fff;
+        }
+
+        .badge {
+            background: rgba(0, 229, 255, 0.1);
+            color: var(--primary);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            border: 1px solid var(--primary);
+        }
+
+        /* Content Sections */
+        section {
+            margin-bottom: 4rem;
+            scroll-margin-top: 2rem;
+        }
+
+        h3 {
+            font-size: 1.8rem;
+            color: #fff;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        h3 i { color: var(--secondary); }
+
+        h4 {
+            font-size: 1.3rem;
+            color: var(--primary);
+            margin: 1.5rem 0 1rem 0;
+        }
+
+        p { margin-bottom: 1rem; color: var(--text-muted); }
+
+        /* Cards & Infos */
+        .info-box {
+            background: rgba(112, 0, 255, 0.05);
+            border-left: 4px solid var(--secondary);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .perf-note {
+            background: rgba(0, 255, 157, 0.05);
+            border-left: 4px solid var(--accent-green);
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+
+        .perf-note strong { color: var(--accent-green); }
+
+        /* Code Blocks */
+        pre {
+            background: var(--code-bg);
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            border: 1px solid #333;
+            margin: 1.5rem 0;
+            position: relative;
+        }
+
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            color: #d4d4d4;
+        }
+
+        .code-header {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: #333;
+            color: #fff;
+            font-size: 0.7rem;
+            padding: 4px 8px;
+            border-bottom-left-radius: 8px;
+        }
+
+        /* Syntax Highlight Simulation */
+        .cmd { color: #ce9178; } /* String/Path */
+        .var { color: #9cdcfe; } /* Variable */
+        .kwd { color: #569cd6; } /* Keyword */
+        .cmt { color: #6a9955; } /* Comment */
+
+        /* Lists */
+        ul { margin-left: 1.5rem; margin-bottom: 1.5rem; color: var(--text-muted); }
+        li { margin-bottom: 0.5rem; }
+
+        /* Footer */
+        footer {
+            margin-top: 5rem;
+            padding-top: 2rem;
+            border-top: 1px solid #333;
+            text-align: center;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        footer a { color: var(--primary); text-decoration: none; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <nav class="sidebar">
+            <h1>MyOS x64</h1>
+            <ul class="nav-links">
+                <li><a href="#vizyon"><i class="fa-solid fa-eye"></i> Vizyon & Özet</a></li>
+                <li><a href="#kernel"><i class="fa-solid fa-microchip"></i> Clang/LLVM Çekirdek</a></li>
+                <li><a href="#entegrasyon"><i class="fa-solid fa-gears"></i> Sistem Entegrasyonu</a></li>
+                <li><a href="#winboat"><i class="fa-brands fa-windows"></i> WinBoat & Hibrit Yapı</a></li>
+                <li><a href="#paketler"><i class="fa-solid fa-box-open"></i> Paket Listesi</a></li>
+                <li><a href="#kurulum"><i class="fa-solid fa-download"></i> Calamares & Kurulum</a></li>
+                <li><a href="#uygulama"><i class="fa-solid fa-terminal"></i> Uygulama Planı</a></li>
+            </ul>
+        </nav>
+
+        <main class="main-content">
+            <header>
+                <span class="badge">Teknik Mimari Raporu v1.0</span>
+                <h2>Clang/LLVM Tabanlı Yüksek Performanslı Oyun Dağıtımı</h2>
+                <p>Linux ZEN v6.18.3-zen1 Çekirdeği ve Yeni Nesil Derleme Teknolojileri ile Oyun Deneyimini Yeniden Tanımlamak.</p>
+            </header>
+
+            <section id="vizyon">
+                <h3><i class="fa-solid fa-bullseye"></i> 1. Yönetici Özeti ve Mimari Vizyon</h3>
+                <p>Bu rapor, <strong>"MyOS x64"</strong> adlı özel Linux dağıtımının, Clang/LLVM derleyici altyapısı üzerine inşa edilerek oyun performansını (FPS kararlılığı, shader derleme hızı) ve sistem tepkiselliğini maksimize etme stratejilerini detaylandırır.</p>
+                <div class="info-box">
+                    <strong>Neden Clang/LLVM?</strong><br>
+                    Standart GCC yerine, Google (Android/ChromeOS) ve Meta gibi teknoloji devlerinin performans kritik sistemlerde tercih ettiği bu teknoloji; daha hızlı derleme süreleri, gelişmiş bellek güvenliği ve oyunlarda mikro takılmaları azaltan optimizasyonlar sunar.
+                </div>
+                <p>Proje, kullanıcının elindeki Linux ZEN çekirdeğinin <code>LLVM=1</code> parametresiyle (Full LTO ve PGO potansiyeli ile) derlenmesini ve WinBoat teknolojisi ile hibrit bir deneyim sunmayı hedefler.</p>
+            </section>
+
+            <section id="kernel">
+                <h3><i class="fa-brands fa-linux"></i> 2. Clang/LLVM Tabanlı Çekirdek Mühendisliği</h3>
+                <p>Çekirdeği Clang ile derlemek (ClangBuiltLinux), LTO (Link Time Optimization) sayesinde kodun çalışma anında daha agresif optimize edilmesini sağlar. Bu, özellikle CS2 ve Valorant gibi CPU yoğun oyunlarda darboğazı azaltır.</p>
+
+                <h4>2.1. Derleme Ortamı Gereksinimleri</h4>
+                <ul>
+                    <li><strong>clang:</strong> C dili derleyicisi.</li>
+                    <li><strong>llvm:</strong> Altyapı araçları.</li>
+                    <li><strong>lld:</strong> GCC'nin ld bağlayıcısından çok daha hızlı olan LLVM bağlayıcısı.</li>
+                </ul>
+
+                <h4>2.2. Clang Optimize Edilmiş PKGBUILD Yapısı</h4>
+                <p>Standart Arch PKGBUILD dosyası, GCC kullanacak şekilde tasarlanmıştır. Aşağıdaki yapılandırma ile bu standart değiştirilir:</p>
+
+                <pre><code><span class="cmt"># ~/myos-kernel-build/PKGBUILD (Düzenlenmiş Bölüm)</span>
+
+pkgbase=<span class="cmd">linux-myos-zen-llvm</span>
+pkgver=<span class="var">6.18.3</span>
+<span class="cmt"># ...</span>
+makedepends=(bc kmod libelf cpio perl tar xz python pahole llvm clang lld)
+options=(<span class="cmd">'!strip'</span>)
+
+prepare() {
+  cd <span class="cmd">"${srcdir}/linux-zen-6.18.3-zen1"</span>
+  cp ../config.config
+  <span class="cmt"># Clang uyumluluğu için konfigürasyonu güncelle</span>
+  make <span class="var">LLVM=1</span> olddefconfig
+}
+
+build() {
+  cd <span class="cmd">"${srcdir}/linux-zen-6.18.3-zen1"</span>
+  
+  <span class="cmt"># KRİTİK ADIM: LLVM=1 ile derleme</span>
+  <span class="cmt"># LLVM_IAS=1: Clang'in kendi 'Integrated Assembler'ını kullanır</span>
+  make <span class="var">LLVM=1 LLVM_IAS=1</span> all
+}</code><span class="code-header">BASH</span></pre>
+
+                <div class="perf-note">
+                    <strong>⚡ Performans Notu:</strong> <code>LLVM=1</code> parametresi, ThinLTO (Link Time Optimization) özelliğinin açılmasına olanak tanır ve oyunlarda <strong>%5'e varan</strong> işlemci verimliliği artışı sağlayabilir.
+                </div>
+            </section>
+
+            <section id="entegrasyon">
+                <h3><i class="fa-solid fa-code-branch"></i> 3. Sistem Geneli Clang Entegrasyonu</h3>
+                <p>Kullanıcının sistemde derlediği yeni paketlerin (AUR vb.) otomatik olarak Clang ile derlenmesi için <code>/etc/makepkg.conf</code> yapılandırılmalıdır.</p>
+
+                <h4>3.1. Varsayılan Derleyiciyi Değiştirmek</h4>
+                <pre><code><span class="cmt"># airootfs/etc/makepkg.conf</span>
+
+<span class="kwd">export</span> CC=clang
+<span class="kwd">export</span> CXX=clang++
+<span class="kwd">export</span> CPP=clang-cpp
+<span class="kwd">export</span> LD=ld.lld
+
+<span class="cmt"># Derleme Bayrakları (Oyun Performansı: -O3 ve AVX2)</span>
+CFLAGS=<span class="cmd">"-march=x86-64-v3 -O3 -pipe -fno-plt -fexceptions ..."</span>
+LDFLAGS=<span class="cmd">"-Wl,-O1,--sort-common,--as-needed,-z,relro,-z,now -fuse-ld=lld"</span>
+
+<span class="cmt"># LTO Etkinleştirme</span>
+OPTIONS=(strip docs !libtool !staticlibs emptydirs zipman purge !debug <span class="var">lto</span>)</code><span class="code-header">CONFIG</span></pre>
+
+                <h4>3.2. Oyunlar ve Mesa Sürücüleri</h4>
+                <p>Oyun performansını artırmak için <strong>CachyOS</strong> depolarının eklenmesi önerilir. Bu, tüm sistemin (Mesa sürücüleri dahil) Clang ve x86-64-v3 komut setleriyle derlenmiş versiyonlarını sunar.</p>
+            </section>
+
+            <section id="winboat">
+                <h3><i class="fa-solid fa-ship"></i> 4. WinBoat ve Windows Uygulamaları</h3>
+                <p>WinBoat içindeki Windows uygulamaları (Adobe, Office), Windows binary'leri olduğu için Linux derleyicisinden doğrudan etkilenmez. Ancak WinBoat'un çalıştığı sanallaştırma katmanı (QEMU/KVM), Clang ile optimize edilmiş çekirdek üzerinde çalıştığı için <strong>daha düşük gecikme süreleri (latency)</strong> sunar.</p>
+            </section>
+
+            <section id="paketler">
+                <h3><i class="fa-solid fa-layer-group"></i> 5. Güncellenmiş Paket Listesi</h3>
+                <p>Sistemin Clang tabanlı bir geliştirme ve oyun ortamı olması için eklenen temel paketler:</p>
+                <div class="info-box" style="background: var(--code-bg); border: 1px solid #333; border-left: 4px solid var(--primary);">
+                    <ul style="margin: 0; list-style: none;">
+                        <li>✅ <code>clang</code>, <code>llvm</code>, <code>lld</code> (Temel Araçlar)</li>
+                        <li>✅ <code>ninja</code> (Hızlı derleme aracı)</li>
+                        <li>✅ <code>cmake</code>, <code>python</code></li>
+                        <li>✅ <code>mesa-performance</code> (Veya CachyOS reposundan mesa)</li>
+                        <li>✅ <code>vulkan-radeon</code> / <code>vulkan-intel</code></li>
+                    </ul>
+                </div>
+            </section>
+
+            <section id="kurulum">
+                <h3><i class="fa-solid fa-hard-drive"></i> 6. Calamares ve Paket Seçimi</h3>
+                <p>Nvidia gibi kapalı kaynak sürücüler (DKMS), kurulum sırasında bazen GCC'ye ihtiyaç duyabilir. Bu yüzden ISO içinde GCC de bulundurulmalı, ancak varsayılan CC Clang olmalıdır.</p>
+                
+                <pre><code><span class="cmt"># Calamares packagechooser.conf</span>
+items:
+    - id: nvidia
+      name: "Nvidia Sürücüleri (Yüksek Performans)"
+      description: "Oyunlar için önerilir. Clang/LLVM çekirdeği ile uyumlu."
+      packages:
+        - nvidia-dkms
+        - nvidia-utils
+        - linux-myos-zen-llvm-headers <span class="cmt"># Kritik: Clang header dosyaları</span></code><span class="code-header">YAML</span></pre>
+            </section>
+
+            <section id="uygulama">
+                <h3><i class="fa-solid fa-hammer"></i> 7. Uygulama Planı</h3>
+                <p>Bu mimariyi hayata geçirmek için izlenecek adımlar:</p>
+                
+                <ol style="margin-left: 1.5rem; color: var(--text-muted);">
+                    <li>
+                        <strong>Çekirdeği Derle:</strong> WSL2 veya Host makinede <code>PKGBUILD</code> dosyasını yukarıdaki ayarlarla çalıştırın.
+                        <br><code>makepkg -sRC</code>
+                    </li>
+                    <li style="margin-top: 1rem;">
+                        <strong>Yerel Depoyu Hazırla:</strong> Derlenen paketleri repo veritabanına ekleyin.
+                        <br><code>repo-add myos-repo.db.tar.gz *.pkg.tar.zst</code>
+                    </li>
+                    <li style="margin-top: 1rem;">
+                        <strong>ISO'yu Oluştur:</strong> <code>mkarchiso</code> komutu ile, <code>makepkg.conf</code> ayarları yapılmış profili build edin.
+                    </li>
+                </ol>
+            </section>
+
+            <footer>
+                <p>MyOS x64 Projesi &copy; 2026. <br>
+                <a href="https://github.com/myos-project" target="_blank"><i class="fa-brands fa-github"></i> GitHub'da İncele</a></p>
+            </footer>
+        </main>
+    </div>
+
+    <script>
+        // Smooth scrolling for sidebar links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
