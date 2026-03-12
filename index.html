@@ -4,224 +4,666 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MyOS x64 – Oyun ve Performans Odaklı Linux</title>
-
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #0b0e14;
-            --card: #121826;
-            --accent: #00e0ff;
-            --text: #e6e6e6;
-            --muted: #9aa4b2;
+            --bg-color: #0b0e14;
+            --card-bg: rgba(18, 24, 38, 0.6);
+            --card-border: rgba(36, 194, 213, 0.15);
+            --primary: #24c2d5;
+            --primary-hover: #1c4f9c;
+            --text-main: #f0f4f8;
+            --text-muted: #9aa4b2;
+            --danger: #ff4757;
+            --warning: #ffa502;
+            --success: #2ed573;
         }
 
         * {
             box-sizing: border-box;
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
         }
 
         body {
             margin: 0;
-            background: linear-gradient(180deg, #0b0e14, #06080d);
-            color: var(--text);
-        }
-
-        header {
-            padding: 80px 20px;
-            text-align: center;
-        }
-
-        header h1 {
-            font-size: 3rem;
-            margin-bottom: 10px;
-            color: var(--accent);
-        }
-
-        header p {
-            font-size: 1.2rem;
-            color: var(--muted);
-            max-width: 700px;
-            margin: auto;
-        }
-
-        section {
-            max-width: 1100px;
-            margin: auto;
-            padding: 40px 20px;
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 20px;
-        }
-
-        .card {
-            background: var(--card);
-            border-radius: 14px;
-            padding: 24px;
-            box-shadow: 0 0 0 1px rgba(255,255,255,0.04);
-        }
-
-        .card h3 {
-            margin-top: 0;
-            color: var(--accent);
-        }
-
-        .card p {
-            color: var(--muted);
+            background: #05070a;
+            background-image: radial-gradient(circle at 50% 0%, #151d2b 0%, #05070a 60%);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
             line-height: 1.6;
         }
 
-        .highlight {
-            background: linear-gradient(135deg, rgba(0,224,255,0.15), rgba(0,224,255,0.03));
-            border: 1px solid rgba(0,224,255,0.25);
+        /* Nav & Language Switcher */
+        nav {
+            display: flex;
+            justify-content: flex-end;
+            padding: 20px 40px;
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            z-index: 100;
         }
 
+        .lang-switch {
+            background: rgba(18, 24, 38, 0.8);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            padding: 5px;
+            display: flex;
+            gap: 5px;
+            backdrop-filter: blur(10px);
+        }
+
+        .lang-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 8px 16px;
+            border-radius: 15px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .lang-btn.active {
+            background: var(--primary);
+            color: #000;
+        }
+
+        /* Header / Hero Section */
+        header {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 80px 20px 20px;
+            position: relative;
+        }
+
+        .warning-badge {
+            background: rgba(255, 71, 87, 0.1);
+            border: 1px solid var(--danger);
+            color: var(--danger);
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-size: 0.95rem;
+            margin-bottom: 30px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            animation: pulseWarning 2s infinite;
+            max-width: 800px;
+            text-align: left;
+            line-height: 1.4;
+        }
+
+        @keyframes pulseWarning {
+            0% { box-shadow: 0 0 0 0 rgba(255,71,87,0.3); }
+            70% { box-shadow: 0 0 0 10px rgba(255,71,87,0); }
+            100% { box-shadow: 0 0 0 0 rgba(255,71,87,0); }
+        }
+
+        h1 {
+            font-size: 4rem;
+            font-weight: 800;
+            margin: 0 0 20px 0;
+            background: linear-gradient(90deg, #ffffff, var(--primary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -1px;
+        }
+
+        p.subtitle {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            max-width: 650px;
+            margin-bottom: 40px;
+        }
+
+        .cta-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--primary);
+            color: #000;
+            padding: 18px 45px;
+            border-radius: 35px;
+            font-size: 1.1rem;
+            font-weight: 800;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(36, 194, 213, 0.3);
+        }
+
+        .cta-btn:hover {
+            transform: translateY(-3px) scale(1.02);
+            background: var(--primary-hover);
+            box-shadow: 0 15px 40px rgba(36, 194, 213, 0.5);
+        }
+
+        /* Sections */
+        section {
+            padding: 80px 20px;
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 60px;
+            color: #fff;
+        }
+
+        /* Grid specific */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            padding: 35px;
+            backdrop-filter: blur(10px);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 4px;
+            background: linear-gradient(90deg, var(--primary), transparent);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(36, 194, 213, 0.4);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            background: rgba(18, 24, 38, 0.8);
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        .card h3 {
+            font-size: 1.4rem;
+            color: var(--primary);
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .card p {
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            flex-grow: 1;
+        }
+
+        .beta-tag {
+            background: rgba(255, 165, 2, 0.15);
+            color: var(--warning);
+            font-size: 0.8rem;
+            padding: 6px 12px;
+            border-radius: 20px;
+            border: 1px solid var(--warning);
+            margin-left: auto;
+            white-space: nowrap;
+        }
+
+        /* Technical Specs List */
+        .tech-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .tech-list li {
+            position: relative;
+            padding-left: 28px;
+            margin-bottom: 12px;
+            color: var(--text-main);
+            font-size: 0.95rem;
+        }
+
+        .tech-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--success);
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        /* Carousel */
+        .carousel-section {
+            background: linear-gradient(180deg, rgba(11, 14, 20, 0) 0%, rgba(36, 194, 213, 0.03) 50%, rgba(11, 14, 20, 0) 100%);
+            padding: 100px 20px;
+        }
+
+        .carousel-container {
+            position: relative;
+            width: 100%;
+            max-width: 1000px;
+            margin: 0 auto;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.6);
+            border: 1px solid var(--card-border);
+            aspect-ratio: 16/9;
+            background: #000;
+        }
+
+        .carousel-slide {
+            display: none;
+            width: 100%;
+            height: 100%;
+            animation: fade 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .carousel-slide.active {
+            display: block;
+        }
+
+        .carousel-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .carousel-btn {
+            cursor: pointer;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50px;
+            height: 50px;
+            background: rgba(18, 24, 38, 0.7);
+            color: white;
+            font-size: 24px;
+            border: 1px solid var(--card-border);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            backdrop-filter: blur(10px);
+            z-index: 10;
+        }
+
+        .carousel-btn:hover {
+            background: var(--primary);
+            color: #000;
+            transform: translateY(-50%) scale(1.1);
+            border-color: var(--primary);
+        }
+
+        .prev-btn { left: 20px; }
+        .next-btn { right: 20px; }
+
+        .carousel-dots {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 10;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .dot.active {
+            background: var(--primary);
+            box-shadow: 0 0 10px var(--primary);
+            transform: scale(1.2);
+        }
+
+        @keyframes fade {
+            from { opacity: 0.4; transform: scale(0.98); } 
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* Footer */
         footer {
             text-align: center;
-            padding: 40px 20px;
-            color: var(--muted);
-            font-size: 0.9rem;
+            padding: 60px 20px;
+            background: #030407;
+            border-top: 1px solid rgba(255,255,255,0.05);
         }
 
-        .cta {
+        .view-counter {
             margin-top: 30px;
             display: inline-block;
-            padding: 14px 26px;
-            border-radius: 10px;
-            background: var(--accent);
-            color: #000;
-            font-weight: 600;
-            text-decoration: none;
+            transition: transform 0.3s;
         }
+        
+        .view-counter:hover {
+            transform: scale(1.05);
+        }
+
+        /* Utility classes for language */
+        [data-lang] { display: none; }
+        [data-lang].active { display: inline-block; }
+        div[data-lang].active { display: block; }
+        p[data-lang].active { display: block; }
+
     </style>
 </head>
-
 <body>
 
-<header>
-    <h1>MyOS x64</h1>
-    <p>
-        Oyun oynayan, performans isteyen ve sisteminin tam kontrolünü elinde tutmak isteyenler için  
-        <strong>Clang/LLVM tabanlı, optimize edilmiş Linux dağıtımı</strong>.
-    </p>
-    <a href="#neden" class="cta">Neden MyOS?</a>
-</header>
+    <nav>
+        <div class="lang-switch">
+            <button class="lang-btn active" onclick="setLang('tr')">TR</button>
+            <button class="lang-btn" onclick="setLang('en')">EN</button>
+        </div>
+    </nav>
 
-<section id="neden">
-    <h2>Neden MyOS x64?</h2>
-    <div class="grid">
-        <div class="card highlight">
-            <h3>🎮 Oyun Odaklı</h3>
-            <p>
-                MyOS, masaüstü için değil <strong>oyun performansı</strong> için tasarlanır.
-                Daha stabil FPS, daha düşük gecikme ve daha hızlı shader derleme hedeflenir.
-            </p>
+    <header>
+        <div class="warning-badge">
+            <span style="font-size: 1.2rem;">⚠️</span>
+            <span data-lang="tr" class="active"><strong>Öneri:</strong> Bu işletim sistemi sadece Intel ve Intel'in en son 7 yıllık işlemcilerine göre optimize edilmiştir. AMD kullanıcılarının yüklemesi önerilmez.</span>
+            <span data-lang="en"><strong>Warning:</strong> This operating system is exclusively optimized for Intel and the last 7 years of Intel processors. Not recommended for AMD users.</span>
         </div>
 
-        <div class="card highlight">
-            <h3>⚡ Daha Akıcı Sistem</h3>
-            <p>
-                Menü geçişlerinden oyun açılışına kadar her şey daha tepkisel.
-                Sistem “hafif” hissettirir çünkü gereksiz hiçbir şey yoktur.
-            </p>
+        <h1><img src="logo.png" alt="MyOS Logo" style="height: 120px; vertical-align: middle; margin-right: 15px; margin-bottom: 5px;">MyOS x64</h1>
+        <p class="subtitle" data-lang="tr" class="active">
+            Oyun oynayan, performans isteyen ve sisteminin tam kontrolünü elinde tutmak isteyenler için <strong>Clang/LLVM tabanlı, tescilli Intel optimizasyonlu Linux dağıtımı</strong>.
+        </p>
+        <p class="subtitle" data-lang="en">
+            The <strong>Clang/LLVM based, proprietary Intel-optimized Linux distribution</strong> for gamers, power users, and those who want full control of their system.
+        </p>
+        
+        <div style="display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; margin-top: 20px;">
+            <a href="https://drive.google.com/file/d/1x02NuB8x6syItAbpdGYg8VM0PwxOL1N2/view" class="cta-btn" target="_blank">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                <div style="display: flex; flex-direction: column; align-items: flex-start; line-height: 1.2;">
+                    <span data-lang="tr" class="active">İndir / Yükle (Intel)</span>
+                    <span data-lang="en">Download / Install (Intel)</span>
+                    <span style="font-size: 0.75rem; opacity: 0.8;" data-lang="tr" class="active">Kararlı Sürüm</span>
+                    <span style="font-size: 0.75rem; opacity: 0.8;" data-lang="en">Stable Release</span>
+                </div>
+            </a>
+
+            <a href="#" class="cta-btn" style="background: rgba(18, 24, 38, 0.8); color: var(--text-muted); border: 1px solid var(--card-border); cursor: not-allowed; box-shadow: none;" onclick="return false;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                <div style="display: flex; flex-direction: column; align-items: flex-start; line-height: 1.2;">
+                    <span data-lang="tr" class="active">İndir / Yükle (AMD)</span>
+                    <span data-lang="en">Download / Install (AMD)</span>
+                    <span style="font-size: 0.75rem; color: var(--warning);" data-lang="tr" class="active">Beta / Henüz Hazır Değil</span>
+                    <span style="font-size: 0.75rem; color: var(--warning);" data-lang="en">Beta / Not Ready Yet</span>
+                </div>
+            </a>
         </div>
+    </header>
 
-        <div class="card highlight">
-            <h3>🧠 Akıllı Optimizasyon</h3>
-            <p>
-                MyOS, modern işlemciler için derlenir.
-                Eski donanım uyumluluğu yerine <strong>maksimum verim</strong> önceliklidir.
-            </p>
+    <section id="features">
+        <h2 class="section-title" data-lang="tr" class="active">Neden MyOS x64?</h2>
+        <h2 class="section-title" data-lang="en">Why MyOS x64?</h2>
+        
+        <div class="grid">
+            <div class="card">
+                <h3>
+                    <span>🔥</span>
+                    <span data-lang="tr" class="active">Özel MyOS Kernel & Kararlılık</span>
+                    <span data-lang="en">Custom MyOS Kernel & Stability</span>
+                </h3>
+                <p data-lang="tr" class="active">Standart jenerik çekirdekler yerine tamamen sıfırdan Clang/LLVM ile derlenmiş özel <strong>7.0.0-myos-intel</strong> Kernel ile çalışır. VFS "kernel panic" sorunları çözülmüş, tüm kritik sürücüler sisteme built-in (gömülü) dahil edilmiş ve inanılmaz düşük gecikme (input lag) hedeflenmiştir.</p>
+                <p data-lang="en">Instead of generic kernels, it runs on the custom <strong>7.0.0-myos-intel</strong> Kernel, compiled entirely from scratch with Clang/LLVM. VFS kernel panic issues are solved, all critical drivers are built-in, and it aims for incredibly low input lag.</p>
+                <ul class="tech-list" data-lang="tr" class="active">
+                    <li>Built-in: EXT4, BTRFS, VIRTIO, SATA_AHCI, NVMe</li>
+                    <li>BORE (Burst-Oriented Response Enhancer) Scheduler</li>
+                </ul>
+                <ul class="tech-list" data-lang="en">
+                    <li>Built-in: EXT4, BTRFS, VIRTIO, SATA_AHCI, NVMe</li>
+                    <li>BORE (Burst-Oriented Response Enhancer) Scheduler</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h3>
+                    <span>🚀</span>
+                    <span data-lang="tr" class="active">Saf Intel Gücü & Maksimum Verim</span>
+                    <span data-lang="en">Pure Intel Power & Efficiency</span>
+                </h3>
+                <p data-lang="tr" class="active">AMD ve NVIDIA'nın gereksiz kod fazlalıkları temizlendi. Mükemmel kaynak yönetimiyle birlikte P-State ve Turbo Boost kilitleri sayesinde donanımınızın sınırlarını zorlar.</p>
+                <p data-lang="en">AMD and NVIDIA bloatware removed. Combined with excellent resource management and hardware P-State / Turbo Boost locks, it pushes your system to the limits.</p>
+                <ul class="tech-list" data-lang="tr" class="active">
+                    <li>Sadece ~1.1 GB boşta RAM kullanımı ile muazzam hafiflik</li>
+                    <li>Oyunlarda %10'a varan saf FPS artışı ve düşük gecikme</li>
+                </ul>
+                <ul class="tech-list" data-lang="en">
+                    <li>Massive lightweight edge with only ~1.1 GB idle RAM usage</li>
+                    <li>Up to 10% pure FPS increase and minimal latency in games</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h3>
+                    <span>🛡️</span>
+                    <span data-lang="tr" class="active">BTRFS & Veri Güvenliği</span>
+                    <span data-lang="en">BTRFS & Data Security</span>
+                </h3>
+                <p data-lang="tr" class="active">Gelişmiş BTRFS desteği sayesinde Snapshot mimarisi tamamen uyumlu çalışır. Sistem geri yüklemelerinde şahsi dosyalarınız (`/home`) asla etkilenmez.</p>
+                <p data-lang="en">Advanced BTRFS support enables a perfectly synchronized Snapshot architecture. Your personal files (`/home`) are secured during system restores.</p>
+                <ul class="tech-list">
+                    <li>@, @home, @log, @pkg, @snapshots subvolumes</li>
+                </ul>
+            </div>
+            
+            <div class="card">
+                <h3>
+                    <span>💫</span>
+                    <span data-lang="tr" class="active">Temiz KDE Entegrasyonu</span>
+                    <span data-lang="en">Clean KDE Integration</span>
+                </h3>
+                <p data-lang="tr" class="active">Kusursuz Breeze Dark uyumluluğu, Mission Center ağ ve sistem monitörü, ve MyOS kimlik yapılandırmalarıyla tamamen baştan tasarlanmış profesyonel arayüz.</p>
+                <p data-lang="en">Flawless Breeze Dark compatibility, Mission Center system monitor, and a fully customized professional interface with MyOS brand identity.</p>
+            </div>
+            
+            <div class="card">
+                <h3>
+                    <span>🔑</span>
+                    <span data-lang="tr" class="active">Kurulum & Giriş Bilgileri</span>
+                    <span data-lang="en">Installation & Login Info</span>
+                </h3>
+                <p data-lang="tr" class="active">MyOS canlı (Live) sistemine giriş yapmak için varsayılan kullanıcı adı ve şifre <strong>myos</strong> olarak belirlenmiştir. Sistemi diskinize kalıcı olarak kurmak için live cd otamatik açılıp masüstünde şifre sorucaktır  root yetkileriyle şifre sorucaktır <code>şifre "myos"</code> şifresini </code> girmeniz gerekmektedir.</p>
+                <p data-lang="en">To log into the MyOS Live system, the default username and password are both <strong>myos</strong>. To permanently install the system to your disk, open a application menu  and run the <code>myos-kur</code> command with root privileges, entering <code>myos</code> when prompted for the password.</p>
+            </div>
+
+            <div class="card" style="grid-column: 1 / -1;">
+                <h3 style="margin-bottom: 10px;">
+                    <span>🪟</span>
+                    <span data-lang="tr" class="active">Windows Uygulama Destekleri</span>
+                    <span data-lang="en">Windows App Support</span>
+                    <span class="beta-tag" data-lang="tr" class="active">Beta, henüz hazır değil</span>
+                    <span class="beta-tag" data-lang="en">Beta, not ready yet</span>
+                </h3>
+                <p data-lang="tr" class="active">MyOS, klasik Linux sistemlerinden farklı olarak çok yakında Windows uygulamalarını yerel deneyim hızında sunmayı amaçlamaktadır.</p>
+                <p data-lang="en">Unlike classic Linux systems, MyOS aims to offer Windows applications at native performance speeds very soon.</p>
+            </div>
         </div>
-    </div>
-</section>
+    </section>
 
-<section>
-    <h2>MyOS’u Farklı Yapan Ne?</h2>
-    <div class="grid">
-        <div class="card">
-            <h3>LLVM / Clang Altyapısı</h3>
-            <p>
-                MyOS, klasik Linux sistemlerinden farklı olarak
-                <strong>Clang/LLVM</strong> derleyici altyapısını merkezine alır.
-                Bu sayede sistem daha agresif ve modern şekilde optimize edilir.
-            </p>
+    <section class="carousel-section">
+        <h2 class="section-title">MyOS Gallery</h2>
+        <div class="carousel-container">
+            <!-- Images from MyOs-x64-main/Myos_Gallery -->
+            <div class="carousel-slide active">
+                <img src="MyOs-x64-main/Myos_Gallery/Ekran Görüntüsü_20260312_033040.png" alt="MyOS Screenshot 1">
+            </div>
+            <div class="carousel-slide">
+                <img src="MyOs-x64-main/Myos_Gallery/Ekran Görüntüsü_20260312_033104.png" alt="MyOS Screenshot 2">
+            </div>
+            <div class="carousel-slide">
+                <img src="MyOs-x64-main/Myos_Gallery/Ekran Görüntüsü_20260312_033117.png" alt="MyOS Screenshot 3">
+            </div>
+            <div class="carousel-slide">
+                <img src="MyOs-x64-main/Myos_Gallery/Ekran Görüntüsü_20260312_033136.png" alt="MyOS Screenshot 4">
+            </div>
+            <div class="carousel-slide">
+                <img src="MyOs-x64-main/Myos_Gallery/Ekran Görüntüsü_20260312_033202.png" alt="MyOS Screenshot 5">
+            </div>
+            <div class="carousel-slide">
+                <img src="MyOs-x64-main/Myos_Gallery/Ekran Görüntüsü_20260312_033216.png" alt="MyOS Screenshot 6">
+            </div>
+            <div class="carousel-slide">
+                <img src="MyOs-x64-main/Myos_Gallery/Ekran Görüntüsü_20260312_033519.png" alt="MyOS Screenshot 7">
+            </div>
+            <div class="carousel-slide">
+                <img src="MyOs-x64-main/Myos_Gallery/Ekran Görüntüsü_20260312_035004.png" alt="MyOS Screenshot 8">
+            </div>
+            <div class="carousel-slide">
+                <img src="MyOs-x64-main/Myos_Gallery/Ekran Görüntüsü_20260312_042653.png" alt="MyOS Screenshot 9">
+            </div>
+            <div class="carousel-slide">
+                <img src="MyOs-x64-main/Myos_Gallery/Ekran Görüntüsü_20260312_042755.png" alt="MyOS Screenshot 10">
+            </div>
+            <div class="carousel-slide">
+                <img src="MyOs-x64-main/Myos_Gallery/Ekran Görüntüsü_20260312_042819.png" alt="MyOS Screenshot 11">
+            </div>
+            <div class="carousel-slide">
+                <img src="MyOs-x64-main/Myos_Gallery/Ekran Görüntüsü_20260312_110137-1.png" alt="MyOS Screenshot 12">
+            </div>
+            <div class="carousel-slide">
+                <img src="MyOs-x64-main/Myos_Gallery/Ekran Görüntüsü_20260312_124743.png" alt="MyOS Screenshot 13">
+            </div>
+            <div class="carousel-slide">
+                <img src="MyOs-x64-main/Myos_Gallery/Ekran Görüntüsü_20260312_124758.png" alt="MyOS Screenshot 14">
+            </div>
+            <div class="carousel-slide">
+                <img src="MyOs-x64-main/Myos_Gallery/Ekran Görüntüsü_20260312_124838.png" alt="MyOS Screenshot 15">
+            </div>
+            <div class="carousel-slide">
+                <img src="MyOs-x64-main/Myos_Gallery/Ekran Görüntüsü_20260312_124850.png" alt="MyOS Screenshot 16">
+            </div>
+            <div class="carousel-slide">
+                <img src="MyOs-x64-main/Myos_Gallery/Ekran Görüntüsü_20260312_124855.png" alt="MyOS Screenshot 17">
+            </div>
+            <div class="carousel-slide">
+                <img src="MyOs-x64-main/Myos_Gallery/Ekran Görüntüsü_20260312_124906.png" alt="MyOS Screenshot 18">
+            </div>
+            <div class="carousel-slide">
+                <img src="MyOs-x64-main/Myos_Gallery/Ekran Görüntüsü_20260312_124924.png" alt="MyOS Screenshot 19">
+            </div>
+            
+            <!-- Navigation -->
+            <button class="carousel-btn prev-btn" onclick="changeSlide(-1)">&#10094;</button>
+            <button class="carousel-btn next-btn" onclick="changeSlide(1)">&#10095;</button>
+
+            <!-- Dots -->
+            <div class="carousel-dots" id="dots-container"></div>
         </div>
+    </section>
 
-        <div class="card">
-            <h3>ZEN Kernel + Düşük Gecikme</h3>
-            <p>
-                Özel ZEN kernel sayesinde oyunlarda mikro takılmalar azalır,
-                giriş gecikmesi (input lag) düşer.
-            </p>
+    <footer>
+        <p data-lang="tr" class="active">MyOS x64 – Performans için tasarlandı. Tüm Hakları Saklıdır.</p>
+        <p data-lang="en">MyOS x64 – Designed for performance. All Rights Reserved.</p>
+        
+        <div class="view-counter">
+            <a href="https://hits.seeyoufarm.com">
+                <img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fitlabsofficial.github.io%2F&count_bg=%231C4F9C&title_bg=%23121826&icon=&icon_color=%23E7E7E7&title=Visitors&edge_flat=false" alt="Hits"/>
+            </a>
         </div>
+    </footer>
 
-        <div class="card">
-            <h3>Steam, Proton, Vulkan Hazır</h3>
-            <p>
-                MyOS, Steam ve Proton ile uyumlu çalışır.
-                Vulkan tabanlı oyunlar için sistem önceden ayarlanmıştır.
-            </p>
-        </div>
-    </div>
-</section>
+    <script>
+        // Language Switcher Logic
+        function setLang(lang) {
+            // Update buttons
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if(btn.innerText.toLowerCase() === lang) {
+                    btn.classList.add('active');
+                }
+            });
 
-<section>
-    <h2>Windows Programları Ne Olacak?</h2>
-    <div class="grid">
-        <div class="card highlight">
-            <h3>🪟 Hibrit Kullanım</h3>
-            <p>
-                MyOS, Windows uygulamalarını tamamen dışlamaz.
-                Adobe, Office gibi yazılımlar için özel çözümler sunar.
-            </p>
-        </div>
+            // Update content
+            document.querySelectorAll('[data-lang]').forEach(el => {
+                el.classList.remove('active');
+                if(el.getAttribute('data-lang') === lang) {
+                    el.classList.add('active');
+                }
+            });
+            
+            // Save to local storage
+            localStorage.setItem('myos_lang', lang);
+        }
 
-        <div class="card">
-            <h3>Linux Gücü + Windows Uygulamaları</h3>
-            <p>
-                Arka planda Linux çalışırken,
-                Windows uygulamalarını gerektiğinde kullanabilirsin.
-            </p>
-        </div>
-    </div>
-</section>
+        // Initialize Language
+        window.onload = () => {
+            const savedLang = localStorage.getItem('myos_lang') || 'tr';
+            setLang(savedLang);
+            
+            // Initialize dots
+            initDots();
+        };
 
-<section>
-    <h2>Kimler İçin Uygun?</h2>
-    <div class="grid">
-        <div class="card">
-            <h3>🎯 Oyuncular</h3>
-            <p>
-                FPS stabilitesi, düşük gecikme ve akıcı oyun isteyenler.
-            </p>
-        </div>
+        // Carousel Logic
+        let slideIndex = 0;
+        const slides = document.querySelectorAll('.carousel-slide');
+        
+        function initDots() {
+            const dotsContainer = document.getElementById('dots-container');
+            slides.forEach((_, index) => {
+                const dot = document.createElement('div');
+                dot.className = index === 0 ? 'dot active' : 'dot';
+                dot.onclick = () => goToSlide(index);
+                dotsContainer.appendChild(dot);
+            });
+        }
 
-        <div class="card">
-            <h3>🛠 Güç Kullanıcıları</h3>
-            <p>
-                Sisteminin nasıl çalıştığını bilmek isteyen,
-                kontrolü seven kullanıcılar.
-            </p>
-        </div>
+        function updateDots() {
+            document.querySelectorAll('.dot').forEach((dot, index) => {
+                dot.classList.toggle('active', index === slideIndex);
+            });
+        }
 
-        <div class="card">
-            <h3>🧪 Meraklılar & Geliştiriciler</h3>
-            <p>
-                Klasik dağıtımlardan sıkılmış,
-                farklı ve güçlü bir şey denemek isteyenler.
-            </p>
-        </div>
-    </div>
-</section>
+        function showSlide(index) {
+            slides.forEach(slide => slide.classList.remove('active'));
+            slides[index].classList.add('active');
+            updateDots();
+        }
 
-<footer>
-    <p>
-        MyOS x64 – Performans için tasarlandı.  
-        Gereksiz her şeyden arındırıldı.
-    </p>
-</footer>
+        function changeSlide(dir) {
+            slideIndex += dir;
+            if (slideIndex >= slides.length) slideIndex = 0;
+            if (slideIndex < 0) slideIndex = slides.length - 1;
+            showSlide(slideIndex);
+        }
 
+        function goToSlide(index) {
+            slideIndex = index;
+            showSlide(slideIndex);
+        }
+
+        // Auto slide
+        setInterval(() => {
+            changeSlide(1);
+        }, 5000);
+    </script>
 </body>
 </html>
