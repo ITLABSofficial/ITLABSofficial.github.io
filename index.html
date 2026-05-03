@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MyOS x64 – Oyun ve Performans Odaklı Linux</title>
+    <title>MyOS x64 – Intel & AMD Stable Releases</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -146,6 +146,14 @@
             box-shadow: 0 15px 40px rgba(36, 194, 213, 0.5);
         }
 
+        .hero-actions {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
         /* Sections */
         section {
             padding: 80px 20px;
@@ -158,6 +166,13 @@
             font-size: 2.5rem;
             margin-bottom: 60px;
             color: #fff;
+        }
+
+        .section-lead {
+            text-align: center;
+            max-width: 850px;
+            margin: -25px auto 40px;
+            color: var(--text-muted);
         }
 
         /* Grid specific */
@@ -386,6 +401,21 @@
     fill: #000; /* Üzerine gelince ikon siyaha dönsün */
 }
 
+        .tool-grid .card h3 {
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .tool-tag {
+            background: rgba(36, 194, 213, 0.12);
+            color: var(--primary);
+            border: 1px solid rgba(36, 194, 213, 0.22);
+            border-radius: 999px;
+            font-size: 0.72rem;
+            padding: 5px 10px;
+            white-space: nowrap;
+        }
+
         /* Utility classes for language */
         [data-lang] { display: none; }
         [data-lang].active { display: inline-block; }
@@ -414,22 +444,16 @@
     </nav>
 
     <header>
-        <div class="warning-badge">
-            <span style="font-size: 1.2rem;">⚠️</span>
-            <span data-lang="tr" class="active"><strong>Öneri:</strong> Bu işletim sistemi sadece Intel ve Intel'in en son 7 yıllık işlemcilerine göre optimize edilmiştir. AMD kullanıcılarının yüklemesi önerilmez.</span>
-            <span data-lang="en"><strong>Warning:</strong> This operating system is exclusively optimized for Intel and the last 7 years of Intel processors. Not recommended for AMD users.</span>
-        </div>
-
         <h1><img src="logo.png" alt="MyOS Logo" style="height: 120px; vertical-align: middle; margin-right: 15px; margin-bottom: 5px;">MyOS x64</h1>
-        <p class="subtitle" data-lang="tr" class="active">
-            Oyun oynayan, performans isteyen ve sisteminin tam kontrolünü elinde tutmak isteyenler için <strong>Clang/LLVM tabanlı, tescilli Intel optimizasyonlu Linux dağıtımı</strong>.
+        <p class="subtitle active" data-lang="tr">
+            Oyun, üretim ve sistem yönetimi için hazırlanmış; özel kernel, BTRFS snapshot altyapısı, ZRAM, MyOS Tools ve tek tık sistem panelleriyle gelen performans odaklı Linux dağıtımı.
         </p>
         <p class="subtitle" data-lang="en">
-            The <strong>Clang/LLVM based, proprietary Intel-optimized Linux distribution</strong> for gamers, power users, and those who want full control of their system.
+            A performance-focused Linux distribution built around a custom kernel, BTRFS snapshot tooling, ZRAM, MyOS Tools, and one-click system management panels for gaming and production workloads.
         </p>
         
-        <div style="display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; margin-top: 20px;">
-            <a href="https://drive.google.com/file/d/1x02NuB8x6syItAbpdGYg8VM0PwxOL1N2/view" class="cta-btn" target="_blank">
+        <div class="hero-actions">
+            <a href="https://drive.google.com/file/d/1ZwBk7wceYl8z6R6OO2FaIrRmhH_Uc3Hz/view?usp=drive_link" class="cta-btn" target="_blank" rel="noopener noreferrer">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
                 <div style="display: flex; flex-direction: column; align-items: flex-start; line-height: 1.2;">
                     <span data-lang="tr" class="active">İndir / Yükle (Intel)</span>
@@ -439,113 +463,214 @@
                 </div>
             </a>
 
-            <a href="#" class="cta-btn" style="background: rgba(18, 24, 38, 0.8); color: var(--text-muted); border: 1px solid var(--card-border); cursor: not-allowed; box-shadow: none;" onclick="return false;">
+            <a href="https://drive.google.com/file/d/1D1cBLsR4RCzUbymyEn5hS8cSSBntx5yi/view?usp=sharing" class="cta-btn" target="_blank" rel="noopener noreferrer">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
                 <div style="display: flex; flex-direction: column; align-items: flex-start; line-height: 1.2;">
                     <span data-lang="tr" class="active">İndir / Yükle (AMD)</span>
                     <span data-lang="en">Download / Install (AMD)</span>
-                    <span style="font-size: 0.75rem; color: var(--warning);" data-lang="tr" class="active">Beta / Henüz Hazır Değil</span>
-                    <span style="font-size: 0.75rem; color: var(--warning);" data-lang="en">Beta / Not Ready Yet</span>
+                    <span style="font-size: 0.75rem; opacity: 0.8;" data-lang="tr" class="active">Kararlı Sürüm</span>
+                    <span style="font-size: 0.75rem; opacity: 0.8;" data-lang="en">Stable Release</span>
                 </div>
-              <a href="https://github.com/ITLABSofficial/MyOs-x64" class="cta-btn github-btn" target="_blank">
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.041-1.416-4.041-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-    </svg>
-    <div style="display: flex; flex-direction: column; align-items: flex-start; line-height: 1.2;">
-        <span data-lang="tr" class="active">GitHub Projesi</span>
-        <span data-lang="en">GitHub Project</span>
-        <span style="font-size: 0.75rem; opacity: 0.8;" data-lang="tr" class="active">Kaynak Kodları</span>
-        <span style="font-size: 0.75rem; opacity: 0.8;" data-lang="en">Source Code</span>
-    </div>  
-</a>
+            </a>
+
+            <a href="https://github.com/ITLABSofficial/MyOs-x64" class="cta-btn github-btn" target="_blank" rel="noopener noreferrer">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.041-1.416-4.041-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                </svg>
+                <div style="display: flex; flex-direction: column; align-items: flex-start; line-height: 1.2;">
+                    <span data-lang="tr" class="active">GitHub Projesi</span>
+                    <span data-lang="en">GitHub Project</span>
+                    <span style="font-size: 0.75rem; opacity: 0.8;" data-lang="tr" class="active">Kaynak Kodları</span>
+                    <span style="font-size: 0.75rem; opacity: 0.8;" data-lang="en">Source Code</span>
+                </div>
             </a>
         </div>
     </header>
 
     <section id="features">
-        <h2 class="section-title" data-lang="tr" class="active">Neden MyOS x64?</h2>
+        <h2 class="section-title active" data-lang="tr">Neden MyOS x64?</h2>
         <h2 class="section-title" data-lang="en">Why MyOS x64?</h2>
+        <p class="section-lead active" data-lang="tr">MyOS'u farklı yapan tek şey indirme butonu değil; özel kernel hattı, hafif bellek yönetimi, BTRFS snapshot zinciri ve tek tık yönetim araçlarının birlikte çalışmasıdır.</p>
+        <p class="section-lead" data-lang="en">What makes MyOS different is not just the download button; it is the way the custom kernel line, lightweight memory handling, the BTRFS snapshot chain, and one-click management tools work together.</p>
         
         <div class="grid">
             <div class="card">
                 <h3>
                     <span>🔥</span>
-                    <span data-lang="tr" class="active">Özel MyOS Kernel & Kararlılık</span>
-                    <span data-lang="en">Custom MyOS Kernel & Stability</span>
+                    <span data-lang="tr" class="active">Özel Kernel & Boot Zinciri</span>
+                    <span data-lang="en">Custom Kernel & Boot Flow</span>
                 </h3>
-                <p data-lang="tr" class="active">Standart jenerik çekirdekler yerine tamamen sıfırdan Clang/LLVM ile derlenmiş özel <strong>7.0.0-myos-intel</strong> Kernel ile çalışır. VFS "kernel panic" sorunları çözülmüş, tüm kritik sürücüler sisteme built-in (gömülü) dahil edilmiş ve inanılmaz düşük gecikme (input lag) hedeflenmiştir.</p>
-                <p data-lang="en">Instead of generic kernels, it runs on the custom <strong>7.0.0-myos-intel</strong> Kernel, compiled entirely from scratch with Clang/LLVM. VFS kernel panic issues are solved, all critical drivers are built-in, and it aims for incredibly low input lag.</p>
-                <ul class="tech-list" data-lang="tr" class="active">
-                    <li>Built-in: EXT4, BTRFS, VIRTIO, SATA_AHCI, NVMe</li>
-                    <li>BORE (Burst-Oriented Response Enhancer) Scheduler</li>
+                <p data-lang="tr" class="active">MyOS, standart jenerik çekirdek yerine kendi kernel hattını kullanır. BORE scheduler, gömülü depolama sürücüleri ve düşük gecikme odaklı yapı sayesinde live ortamdan kurulu sisteme kadar daha sağlam bir açılış zinciri hedeflenir.</p>
+                <p data-lang="en">MyOS uses its own kernel line instead of a generic distribution kernel. With the BORE scheduler, built-in storage drivers, and a low-latency-oriented setup, it aims for a more reliable boot path from the live medium to the installed system.</p>
+                <ul class="tech-list active" data-lang="tr">
+                    <li>BORE scheduler varsayılan çekirdek yaklaşımı</li>
+                    <li>Built-in: EXT4, BTRFS, NVMe, SATA_AHCI, VirtIO</li>
+                    <li>Intel ve AMD için ayrı optimize kernel kanalları</li>
                 </ul>
                 <ul class="tech-list" data-lang="en">
-                    <li>Built-in: EXT4, BTRFS, VIRTIO, SATA_AHCI, NVMe</li>
-                    <li>BORE (Burst-Oriented Response Enhancer) Scheduler</li>
+                    <li>BORE scheduler by default</li>
+                    <li>Built-in: EXT4, BTRFS, NVMe, SATA_AHCI, VirtIO</li>
+                    <li>Separate optimized kernel channels for Intel and AMD</li>
                 </ul>
             </div>
 
             <div class="card">
                 <h3>
                     <span>🚀</span>
-                    <span data-lang="tr" class="active">Saf Intel Gücü & Maksimum Verim</span>
-                    <span data-lang="en">Pure Intel Power & Efficiency</span>
+                    <span data-lang="tr" class="active">ZRAM & Kaynak Yönetimi</span>
+                    <span data-lang="en">ZRAM & Resource Handling</span>
                 </h3>
-                <p data-lang="tr" class="active">AMD ve NVIDIA'nın gereksiz kod fazlalıkları temizlendi. Mükemmel kaynak yönetimiyle birlikte P-State ve Turbo Boost kilitleri sayesinde donanımınızın sınırlarını zorlar.</p>
-                <p data-lang="en">AMD and NVIDIA bloatware removed. Combined with excellent resource management and hardware P-State / Turbo Boost locks, it pushes your system to the limits.</p>
-                <ul class="tech-list" data-lang="tr" class="active">
-                    <li>Sadece ~1.1 GB boşta RAM kullanımı ile muazzam hafiflik</li>
-                    <li>Oyunlarda %10'a varan saf FPS artışı ve düşük gecikme</li>
+                <p data-lang="tr" class="active">Sistem hafif tutulur; ZRAM ve düzenli servis seti sayesinde çoklu görevde daha dengeli tepki verir. Amaç sadece yüksek FPS değil, masaüstünde de kısa tepki süreleri üretmektir.</p>
+                <p data-lang="en">The system stays lightweight; with ZRAM and a disciplined service set, it reacts more consistently under multitasking. The goal is not only higher FPS, but also shorter response times on the desktop.</p>
+                <ul class="tech-list active" data-lang="tr">
+                    <li>systemd zram-generator ile otomatik ZRAM akışı</li>
+                    <li>Düşük boşta bellek kullanımı</li>
+                    <li>Yoğun yükte daha dengeli sistem tepkisi</li>
                 </ul>
                 <ul class="tech-list" data-lang="en">
-                    <li>Massive lightweight edge with only ~1.1 GB idle RAM usage</li>
-                    <li>Up to 10% pure FPS increase and minimal latency in games</li>
+                    <li>Automatic ZRAM flow via systemd zram-generator</li>
+                    <li>Low idle memory usage</li>
+                    <li>More consistent response under heavier load</li>
                 </ul>
             </div>
 
             <div class="card">
                 <h3>
                     <span>🛡️</span>
-                    <span data-lang="tr" class="active">BTRFS & Veri Güvenliği</span>
-                    <span data-lang="en">BTRFS & Data Security</span>
+                    <span data-lang="tr" class="active">BTRFS Snapshot Zinciri</span>
+                    <span data-lang="en">BTRFS Snapshot Chain</span>
                 </h3>
-                <p data-lang="tr" class="active">Gelişmiş BTRFS desteği sayesinde Snapshot mimarisi tamamen uyumlu çalışır. Sistem geri yüklemelerinde şahsi dosyalarınız (`/home`) asla etkilenmez.</p>
-                <p data-lang="en">Advanced BTRFS support enables a perfectly synchronized Snapshot architecture. Your personal files (`/home`) are secured during system restores.</p>
-                <ul class="tech-list">
-                    <li>@, @home, @log, @pkg, @snapshots subvolumes</li>
+                <p data-lang="tr" class="active">Kurulum sırasında BTRFS seçildiğinde yapı sadece format atmaz; alt birimleri, Snapper akışı ve grub-btrfs görünürlüğünü birlikte düşünür. Böylece geri dönüş ve bakım daha kontrollü hale gelir.</p>
+                <p data-lang="en">When BTRFS is selected during installation, the setup does more than format a disk; it aligns subvolumes, the Snapper flow, and grub-btrfs visibility together for a more controlled rollback and maintenance path.</p>
+                <ul class="tech-list active" data-lang="tr">
+                    <li>@, @home, @log, @pkg ve snapshot odaklı yapı</li>
+                    <li>Snapper ve Btrfs Assistant uyumu</li>
+                    <li>grub-btrfs ile snapshot görünürlüğü</li>
+                </ul>
+                <ul class="tech-list" data-lang="en">
+                    <li>@, @home, @log, @pkg and snapshot-oriented layout</li>
+                    <li>Snapper and Btrfs Assistant integration</li>
+                    <li>Snapshot visibility through grub-btrfs</li>
                 </ul>
             </div>
             
             <div class="card">
                 <h3>
                     <span>💫</span>
-                    <span data-lang="tr" class="active">Temiz KDE Entegrasyonu</span>
-                    <span data-lang="en">Clean KDE Integration</span>
+                    <span data-lang="tr" class="active">Hazır Geliştirici Temeli</span>
+                    <span data-lang="en">Developer-Ready Base</span>
                 </h3>
-                <p data-lang="tr" class="active">Kusursuz Breeze Dark uyumluluğu, Mission Center ağ ve sistem monitörü, ve MyOS kimlik yapılandırmalarıyla tamamen baştan tasarlanmış profesyonel arayüz.</p>
-                <p data-lang="en">Flawless Breeze Dark compatibility, Mission Center system monitor, and a fully customized professional interface with MyOS brand identity.</p>
+                <p data-lang="tr" class="active">MyOS yalnızca oyunculara değil, geliştirme yapanlara da hazır gelir. Base-devel, Python, Go ve sistem araçları sayesinde C/C++, script ve araç geliştirme için başlangıç zemini kurulu olur.</p>
+                <p data-lang="en">MyOS is not only for gamers; it also comes ready for development work. With base-devel, Python, Go, and system tools, it provides a solid starting point for C/C++, scripting, and utility development.</p>
+                <ul class="tech-list active" data-lang="tr">
+                    <li>base-devel ile C/C++ derleme temeli</li>
+                    <li>Python, PyQt6 ve Go hazır</li>
+                    <li>Ağ, disk ve sanallaştırma araçları kurulu</li>
+                </ul>
+                <ul class="tech-list" data-lang="en">
+                    <li>C/C++ build foundation through base-devel</li>
+                    <li>Python, PyQt6, and Go available out of the box</li>
+                    <li>Networking, disk, and virtualization tools included</li>
+                </ul>
             </div>
             
             <div class="card">
                 <h3>
-                    <span>🔑</span>
-                    <span data-lang="tr" class="active">Kurulum & Giriş Bilgileri</span>
-                    <span data-lang="en">Installation & Login Info</span>
+                    <span>🖥️</span>
+                    <span data-lang="tr" class="active">KDE Plasma 6 & Günlük Kullanım</span>
+                    <span data-lang="en">KDE Plasma 6 & Daily Use</span>
                 </h3>
-                <p data-lang="tr" class="active">MyOS canlı (Live) sistemine giriş yapmak için varsayılan kullanıcı adı ve şifre <strong>myos</strong> olarak belirlenmiştir. Sistemi diskinize kalıcı olarak kurmak için live cd otamatik açılıp masüstünde şifre sorucaktır  root yetkileriyle şifre sorucaktır <code>şifre "myos"</code> şifresini </code> girmeniz gerekmektedir.</p>
-                <p data-lang="en">To log into the MyOS Live system, the default username and password are both <strong>myos</strong>. To permanently install the system to your disk, open a application menu  and run the <code>myos-kur</code> command with root privileges, entering <code>myos</code> when prompted for the password.</p>
+                <p data-lang="tr" class="active">Plasma 6 masaüstü, Mission Center, Discover/Bazaar ve MyOS'e özel tema ayarları birlikte gelir. Hedef, live ortamdan itibaren temiz ama araçsız olmayan bir masaüstü deneyimidir.</p>
+                <p data-lang="en">The stack ships with Plasma 6, Mission Center, Discover/Bazaar, and MyOS-specific theme defaults. The goal is a desktop that feels clean from the live session onward without being bare.</p>
+                <ul class="tech-list active" data-lang="tr">
+                    <li>Plasma 6 ve MyOS tema ayarları</li>
+                    <li>Mission Center, Discover ve Bazaar</li>
+                    <li>Live ortamdan itibaren Türkçe ve günlük kullanıma hazır yapı</li>
+                </ul>
+                <ul class="tech-list" data-lang="en">
+                    <li>Plasma 6 with MyOS theme defaults</li>
+                    <li>Mission Center, Discover, and Bazaar</li>
+                    <li>Turkish-ready daily-use setup from the live session onward</li>
+                </ul>
             </div>
 
-            <div class="card" style="grid-column: 1 / -1;">
-                <h3 style="margin-bottom: 10px;">
-                    <span>🪟</span>
-                    <span data-lang="tr" class="active">Windows Uygulama Destekleri</span>
-                    <span data-lang="en">Windows App Support</span>
-                    <span class="beta-tag" data-lang="tr" class="active">Beta, henüz hazır değil</span>
-                    <span class="beta-tag" data-lang="en">Beta, not ready yet</span>
+            <div class="card">
+                <h3>
+                    <span>🔑</span>
+                    <span data-lang="tr" class="active">Kurulum & Live Giriş</span>
+                    <span data-lang="en">Installation & Live Login</span>
                 </h3>
-                <p data-lang="tr" class="active">MyOS, klasik Linux sistemlerinden farklı olarak çok yakında Windows uygulamalarını yerel deneyim hızında sunmayı amaçlamaktadır.</p>
-                <p data-lang="en">Unlike classic Linux systems, MyOS aims to offer Windows applications at native performance speeds very soon.</p>
+                <p data-lang="tr" class="active">Live sistemde varsayılan kullanıcı adı ve parola <strong>myos</strong> olarak ayarlıdır. Kurulum masaüstü kısayolu veya <code>myos-kur</code> ile başlatılır; yetki isteyen adımlarda parola yine <strong>myos</strong>'tur.</p>
+                <p data-lang="en">In the live system, the default username and password are both <strong>myos</strong>. Installation starts through the desktop shortcut or <code>myos-kur</code>; whenever elevated privileges are requested, the password remains <strong>myos</strong>.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="tools">
+        <h2 class="section-title active" data-lang="tr">Yerleşik MyOS Araçları</h2>
+        <h2 class="section-title" data-lang="en">Built-In MyOS Tools</h2>
+        <p class="section-lead active" data-lang="tr">MyOS'u farklılaştıran katman burada başlıyor: yalnızca bir masaüstü değil, kendi araç zinciriyle gelen kurulum, bakım ve performans akışı.</p>
+        <p class="section-lead" data-lang="en">This is where MyOS separates itself: not just a desktop, but an installation, maintenance, and performance flow that ships with its own toolchain.</p>
+
+        <div class="grid tool-grid">
+            <div class="card">
+                <h3>
+                    <span data-lang="tr" class="active">👋 MyOS Hello</span>
+                    <span data-lang="en">👋 MyOS Hello</span>
+                    <span class="tool-tag">First Boot</span>
+                </h3>
+                <p data-lang="tr" class="active">İlk açılış yardımcısıdır. Kullanıcıyı tema, kısa yollar ve temel sistem ekranlarına taşır; Control Center ve Package Installer için hızlı geçiş noktası sunar.</p>
+                <p data-lang="en">The first-boot helper. It guides users toward themes, shortcuts, and core system screens while acting as a fast launcher for Control Center and Package Installer.</p>
+            </div>
+
+            <div class="card">
+                <h3>
+                    <span data-lang="tr" class="active">🎛️ MyOS Control Center</span>
+                    <span data-lang="en">🎛️ MyOS Control Center</span>
+                    <span class="tool-tag">System Panel</span>
+                </h3>
+                <p data-lang="tr" class="active">Güç profilleri, DNS, firewall, NetSec, kernel yönetimi, GPU tweak ve I/O Boost gibi günlük kritik ayarları tek pencerede toplar.</p>
+                <p data-lang="en">It gathers daily-critical controls such as power profiles, DNS, firewall, NetSec, kernel management, GPU tweaks, and I/O Boost into one window.</p>
+            </div>
+
+            <div class="card">
+                <h3>
+                    <span data-lang="tr" class="active">🖥️ MyOS Scaler</span>
+                    <span data-lang="en">🖥️ MyOS Scaler</span>
+                    <span class="tool-tag">Gamescope</span>
+                </h3>
+                <p data-lang="tr" class="active">Gamescope tabanlı ölçekleme, Steam kancası, FSR/NIS akışı, GameMode/MangoHud yardımcıları ve ZRAM durum sorgusu ile oyuncu tarafına odaklanır.</p>
+                <p data-lang="en">Focused on the gaming side with Gamescope-based scaling, Steam hooking, FSR/NIS flow, GameMode/MangoHud helpers, and ZRAM status checks.</p>
+            </div>
+
+            <div class="card">
+                <h3>
+                    <span data-lang="tr" class="active">💽 MyOS Installer & Dual Boot</span>
+                    <span data-lang="en">💽 MyOS Installer & Dual Boot</span>
+                    <span class="tool-tag">Installer</span>
+                </h3>
+                <p data-lang="tr" class="active">MyOS Installer, mevcut Windows ve Linux kurulumlarını algılayabilir; seçtiğiniz bölümü küçültüp MyOS için yeni alan ayırarak yanına kurulum yapabilir. Kurulum sonunda mevcut EFI yapısını koruyup diğer sistemleri GRUB menüsüne dahil edecek şekilde tasarlanmıştır.</p>
+                <p data-lang="en">MyOS Installer can detect existing Windows and Linux installations, shrink a selected partition, and carve out new space for a side-by-side MyOS install. It is designed to preserve the existing EFI layout and include other systems in the GRUB boot menu at the end of setup.</p>
+            </div>
+
+            <div class="card">
+                <h3>
+                    <span data-lang="tr" class="active">📦 MyOS Package Installer</span>
+                    <span data-lang="en">📦 MyOS Package Installer</span>
+                    <span class="tool-tag">Curated Apps</span>
+                </h3>
+                <p data-lang="tr" class="active">Kategori bazlı uygulama kurulum akışı sunar. Günlük araçlar, medya, ofis, oyun ve sistem uygulamalarını tek noktadan daha düzenli şekilde yüklemeyi hedefler.</p>
+                <p data-lang="en">Provides a category-based app installation flow. It aims to make daily tools, media, office, gaming, and system software easier to install from one curated point.</p>
+            </div>
+
+            <div class="card">
+                <h3>
+                    <span data-lang="tr" class="active">🧰 MyOS Tools Release Paketi</span>
+                    <span data-lang="en">🧰 MyOS Tools Release Bundle</span>
+                    <span class="tool-tag">Standalone</span>
+                </h3>
+                <p data-lang="tr" class="active">MyOS araçları derlenmiş standalone binary olarak paketlenir ve sürüm mantığı <code>MyOS_Tolls.V10.tar.gz</code> formatında taşınır. Amaç, live ISO ile kurulu sistem arasında aynı araç zincirini korumaktır.</p>
+                <p data-lang="en">MyOS utilities are shipped as compiled standalone binaries and versioned through the <code>MyOS_Tolls.V10.tar.gz</code> release format. The goal is to keep the same toolchain across the live ISO and the installed system.</p>
             </div>
         </div>
     </section>
@@ -648,8 +773,14 @@ window.addEventListener('resize', () => {
 
 // Mouse ve Dokunma takibi
 const updateMouse = (e) => {
-    mouse.x = e.x || e.touches[0].clientX;
-    mouse.y = e.y || e.touches[0].clientY;
+    if (e.touches && e.touches[0]) {
+        mouse.x = e.touches[0].clientX;
+        mouse.y = e.touches[0].clientY;
+        return;
+    }
+
+    mouse.x = e.clientX;
+    mouse.y = e.clientY;
 };
 window.addEventListener('mousemove', updateMouse);
 window.addEventListener('touchmove', updateMouse);
